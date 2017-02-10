@@ -1,0 +1,34 @@
+.main-wrapper {
+  min-height: 100%;
+  width: 100%;
+  position: absolute;;
+}
+
+.no-cap {
+  text-transform: none;
+}
+
+.cap {
+  text-transform: capitalize;
+}
+
+.separate-line {
+  border-top: 1px solid #eee;
+}
+
+.main-content {
+  padding-bottom: 100px;
+  width: 100%;
+}
+
+.footer {
+  color: #767676;
+  text-align: center;
+  display: block;
+  width: 100%;
+  position: absolute;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  bottom: 0;
+  left: 0;
+}
