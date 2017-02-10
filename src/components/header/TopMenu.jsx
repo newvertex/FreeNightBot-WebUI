@@ -23,7 +23,7 @@ TopMenu.propTypes = {
 };
 
 TopMenu.defaultProps = {
-  isAuth: false,
+  isAuth: true,
 };
 
 export default TopMenu;

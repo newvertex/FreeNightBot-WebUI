@@ -20,7 +20,7 @@ const UserMenu = ({ user, onNewClick }) => (
     >
       <Dropdown.Menu>
         <Dropdown.Header>
-          <span style={{ textTransform: 'none' }}>
+          <span className='no-cap'>
             Signed in as <strong>{user.username}</strong>
           </span>
         </Dropdown.Header>
