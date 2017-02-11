@@ -10,7 +10,7 @@ const UserMenu = ({ user, onNewClick }) => (
       onClick={onNewClick}
     >
       <Icon name='add' />
-      New
+      <span className='hide-on-mobile'>New</span>
     </Menu.Item>
 
     <Dropdown

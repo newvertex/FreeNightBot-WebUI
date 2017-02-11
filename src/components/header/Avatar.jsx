@@ -4,7 +4,7 @@ import { Image } from 'semantic-ui-react';
 const Avatar = ({ avatar, name }) => (
   <span>
     <Image avatar src={avatar} />
-    {name}
+    <span className='hide-on-mobile'>{name}</span>
   </span>
 );
 

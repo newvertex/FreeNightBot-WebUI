@@ -6,15 +6,15 @@ import SocialLinks from './SocialLinks';
 import SimpleMenu from './SimpleMenu';
 
 const Footer = ({ brand }) => (
-  <div className='footer'>
-    <Grid container columns={3} verticalAlign='middle' className='separate-line'>
-      <Grid.Column textAlign='left'>
+  <div className='main-footer'>
+    <Grid container stackable columns={3} textAlign='center' verticalAlign='middle' className='separate-line'>
+      <Grid.Column>
         <CopyRight name={brand.admin.name} link={brand.admin.social.telegram} />
       </Grid.Column>
-      <Grid.Column textAlign='center'>
+      <Grid.Column>
         <SocialLinks social={brand.social} />
       </Grid.Column>
-      <Grid.Column textAlign='right'>
+      <Grid.Column>
         <SimpleMenu />
       </Grid.Column>
     </Grid>

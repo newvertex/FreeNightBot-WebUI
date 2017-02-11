@@ -1,7 +1,17 @@
 .main-wrapper {
-  min-height: 100%;
-  width: 100%;
-  position: absolute;;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1 0 auto;
+}
+
+.main-footer {
+  color: #767676;
+  text-align: center;
+  padding: 1rem;
 }
 
 .no-cap {
@@ -16,23 +26,13 @@
   border-top: 1px solid #eee;
 }
 
-.main-content {
-  padding-bottom: 120px;
-  width: 100%;
-}
-
-.footer {
-  color: #767676;
-  text-align: center;
-  display: block;
-  width: 100%;
-  position: absolute;
-  padding-bottom: 10px;
-  bottom: 0;
-  left: 0;
+@media screen and (max-width: 380px) {
+  .hide-on-mobile {
+    display: none;
+  }
 }
 
 .login-box {
-  width: 320px;
-  margin: 0 auto;
+  max-width: 320px;
+  margin: 5px auto 5px auto;
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import map from 'lodash/map';
-import { List, Image } from 'semantic-ui-react';
+import { List } from 'semantic-ui-react';
 
 const SocialLinks = ({ social }) => (
   <List horizontal link size='huge'>
