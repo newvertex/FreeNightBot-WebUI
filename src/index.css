@@ -5,7 +5,10 @@
 }
 
 .main-content {
-  flex: 1 0 auto;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
   padding-bottom: 1em;
 }
 
@@ -34,12 +37,7 @@
 }
 
 .login-box {
+  flex: 1;
   max-width: 320px;
   margin: 5px auto 5px auto;
-}
-
-.v-align {
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
