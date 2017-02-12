@@ -6,6 +6,7 @@
 
 .main-content {
   flex: 1 0 auto;
+  padding-bottom: 1em;
 }
 
 .main-footer {
@@ -35,4 +36,10 @@
 .login-box {
   max-width: 320px;
   margin: 5px auto 5px auto;
+}
+
+.v-align {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
