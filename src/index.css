@@ -7,9 +7,13 @@
 .main-content {
   display: flex;
   flex: 1;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   padding-bottom: 1em;
+}
+
+.center-content {
+  align-self: center;
 }
 
 .main-footer {
@@ -40,6 +44,11 @@
   flex: 1;
   max-width: 320px;
   margin: 5px auto 5px auto;
+}
+
+.radio-field {
+  padding-top: 10px;
+  padding-left: 10px;
 }
 
 .radio-field .ui.radio.checkbox label:before, .ui.radio.checkbox label:after {
