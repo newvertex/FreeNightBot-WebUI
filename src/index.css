@@ -64,14 +64,20 @@
   user-select: none;
   font-size: 1.2em;
   color: grey;
+  background-color: #eee;
   border: 2px dashed;
   min-height: 100px;
   height: 100%;
   width: 100%;
 }
 
+.upload-drop-zone:hover {
+  background-color: #dfeaff;
+}
+
 .upload-drop-zone-active {
   color: black;
+  background-color: #deffdb;
   border: 2px dashed;
 }
 
