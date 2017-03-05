@@ -54,3 +54,36 @@
 .radio-field .ui.radio.checkbox label:before, .ui.radio.checkbox label:after {
   top: 15px;
 }
+
+.upload-drop-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  font-size: 1.2em;
+  color: grey;
+  border: 2px dashed;
+  min-height: 100px;
+  height: 100%;
+  width: 100%;
+}
+
+.upload-drop-zone-active {
+  color: black;
+  border: 2px dashed;
+}
+
+.upload-from-link {
+  text-align: center;
+  padding: 6px;
+}
+
+.upload-from-link * {
+  padding-left: 6px;
+}
+
+.upload-from-link input[type=text] {
+  width: 250px;
+}
