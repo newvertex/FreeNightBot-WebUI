@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Header, Button, Divider } from 'semantic-ui-react';
+import { Modal, Header, Button, Divider, Loader, Dimmer } from 'semantic-ui-react';
 
 import InputBox from './InputBox';
 import FromWebLink from './FromWebLink';
@@ -10,6 +10,7 @@ class ImageUploader extends React.Component {
 
   	this.state = {
       modalOpen: false,
+      uploading: false,
       imageUrl: null,
     };
 
@@ -21,7 +22,7 @@ class ImageUploader extends React.Component {
 
   handleOpen(e) {
     e.preventDefault();
-    this.setState({ modalOpen: true })
+    this.setState({ modalOpen: true });
   }
 
   handleClose(e) {
@@ -37,9 +38,15 @@ class ImageUploader extends React.Component {
 
   uploadImage(file) {
     console.log(file);
-    // TODO: change modal mode to loading
-    // TODO: upload file to server and setUrl
-    // TODO: close the modal
+    this.setState({ uploading: true });
+    // TODO: upload file to server and setUrl;
+    // FIXME: fake server upload, replace with real image upload
+    setTimeout(() => {
+      this.setState({
+        modalOpen: false,
+        imageUrl: 'http://example.com/img.png'
+      });
+    }, 5000);
   }
 
   render(){
@@ -49,6 +56,7 @@ class ImageUploader extends React.Component {
         <Modal
           open={this.state.modalOpen}
           onClose={this.handleClose}
+          dimmer="blurring"
           size="small"
           closeIcon="close"
         >
@@ -61,6 +69,9 @@ class ImageUploader extends React.Component {
           <Modal.Actions>
             <Button onClick={this.handleClose} primary disabled={this.state.imageUrl ? false : true}>Add picture</Button>
           </Modal.Actions>
+          <Dimmer active={this.state.uploading} inverted>
+            <Loader content="Uploading..." size="large" />
+          </Dimmer>
         </Modal>
       </div>
     );
