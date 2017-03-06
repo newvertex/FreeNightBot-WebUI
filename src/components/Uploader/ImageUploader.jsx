@@ -11,12 +11,10 @@ class ImageUploader extends React.Component {
   	this.state = {
       modalOpen: false,
       uploading: false,
-      imageUrl: null,
     };
 
     this.handleOpen = this.handleOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
-    this.setUrl = this.setUrl.bind(this);
     this.uploadImage = this.uploadImage.bind(this);
   }
 
@@ -26,14 +24,7 @@ class ImageUploader extends React.Component {
   }
 
   handleClose(e) {
-    this.setState({
-      modalOpen: false,
-      imageUrl: null,
-     });
-  }
-
-  setUrl(url) {
-    this.setState({ imageUrl: url });
+    this.setState({ modalOpen: false });
   }
 
   uploadImage(file) {
@@ -42,10 +33,8 @@ class ImageUploader extends React.Component {
     // TODO: upload file to server and setUrl;
     // FIXME: fake server upload, replace with real image upload
     setTimeout(() => {
-      this.setState({
-        modalOpen: false,
-        imageUrl: 'http://example.com/img.png'
-      });
+      this.props.setPostImage('http://example.com/img.png');
+      this.setState({ modalOpen: false });
     }, 5000);
   }
 
@@ -64,10 +53,10 @@ class ImageUploader extends React.Component {
           <Modal.Content>
             <InputBox upload={this.uploadImage}/>
             <Divider />
-            <FromWebLink setUrl={this.setUrl} />
+            <FromWebLink setUrl={this.props.setPostImage} />
           </Modal.Content>
           <Modal.Actions>
-            <Button onClick={this.handleClose} primary disabled={this.state.imageUrl ? false : true}>Add picture</Button>
+            <Button onClick={this.handleClose} primary disabled={this.props.postImage ? false : true}>Add picture</Button>
           </Modal.Actions>
           <Dimmer active={this.state.uploading} inverted>
             <Loader content="Uploading..." size="large" />
