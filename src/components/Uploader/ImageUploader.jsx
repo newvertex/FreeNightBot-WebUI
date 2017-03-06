@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal, Header, Button, Divider, Loader, Dimmer } from 'semantic-ui-react';
 
+import ImageBox from './ImageBox';
 import InputBox from './InputBox';
 import FromWebLink from './FromWebLink';
 
@@ -34,14 +35,17 @@ class ImageUploader extends React.Component {
     // FIXME: fake server upload, replace with real image upload
     setTimeout(() => {
       this.props.setPostImage('http://example.com/img.png');
-      this.setState({ modalOpen: false });
+      this.setState({
+        uploading: false,
+        modalOpen: false,
+      });
     }, 5000);
   }
 
   render(){
     return(
       <div>
-        <Button onClick={this.handleOpen}>Upload picture</Button>
+        <ImageBox imageUrl={this.props.postImage} onClick={this.handleOpen} />
         <Modal
           open={this.state.modalOpen}
           onClose={this.handleClose}
