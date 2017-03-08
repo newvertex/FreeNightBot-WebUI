@@ -1,9 +1,11 @@
 import React from 'react';
-import { Modal, Header, Button, Divider, Loader, Dimmer } from 'semantic-ui-react';
+import { Modal, Header, Button, Divider, Loader, Dimmer, Message } from 'semantic-ui-react';
 
 import ImageBox from './ImageBox';
 import InputBox from './InputBox';
 import FromWebLink from './FromWebLink';
+
+import imgur from './imgur';
 
 class ImageUploader extends React.Component {
   constructor(props){
@@ -12,6 +14,7 @@ class ImageUploader extends React.Component {
   	this.state = {
       modalOpen: false,
       uploading: false,
+      err: null,
     };
 
     this.handleOpen = this.handleOpen.bind(this);
@@ -29,17 +32,23 @@ class ImageUploader extends React.Component {
   }
 
   uploadImage(file) {
-    console.log(file);
     this.setState({ uploading: true });
-    // TODO: upload file to server and setUrl;
-    // FIXME: fake server upload, replace with real image upload
-    setTimeout(() => {
-      this.props.setPostImage('http://example.com/img.png');
-      this.setState({
-        uploading: false,
-        modalOpen: false,
-      });
-    }, 5000);
+    imgur(file)
+      .then((res) => res.json())
+      .then((res) => {
+        let link = res.data.link.replace('http', 'https');
+        this.props.setPostImage(link);
+        this.setState({
+          uploading: false,
+          modalOpen: false,
+        });
+      })
+      .catch((err) => {
+        this.setState({
+          uploading: false,
+          error: err,
+        });
+      })
   }
 
   render(){
@@ -55,6 +64,14 @@ class ImageUploader extends React.Component {
         >
           <Header icon="photo" content="Upload picture" />
           <Modal.Content>
+            {this.state.err
+              && <Message
+                    error
+                    header="Error on uploading image!"
+                    content={this.state.err.message}
+                  />
+            }
+
             <InputBox upload={this.uploadImage}/>
             <Divider />
             <FromWebLink setUrl={this.props.setPostImage} />
