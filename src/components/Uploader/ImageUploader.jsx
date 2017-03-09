@@ -54,6 +54,7 @@ class ImageUploader extends React.Component {
   render(){
     return(
       <div>
+        <Divider section />
         <ImageBox imageUrl={this.props.postImage} onClick={this.handleOpen} />
         <Modal
           open={this.state.modalOpen}

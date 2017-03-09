@@ -95,31 +95,21 @@
 }
 
 .image-box {
-  position: relative;
   border: 1px solid #eaeaea;
   background-color: ghostwhite;
   margin: auto;
   text-align: center;
-  max-height: 170px;
-  width: 200px;
+  max-width: 250px;
   overflow: hidden;
-}
-
-.image-box img {
-  border-radius: 3px;
-  max-width: 100%;
-  height: auto;
 }
 
 .image-box .upload-button {
   display: block;
-  position: absolute;
   color: #fff;
   background-color: rgba(0, 0, 0, 0.5);
   line-height: 30px;
   left: 0;
   right: 0;
-  bottom: 0;
   transition: background .15s ease;
   border-bottom-right-radius: 3px;
   border-bottom-left-radius: 3px;

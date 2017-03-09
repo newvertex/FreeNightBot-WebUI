@@ -1,10 +1,11 @@
 import React from 'react';
+import { Image } from 'semantic-ui-react';
 
 function ImageBox({ imageUrl, onClick }) {
   return (
     <div className="image-box">
-        <img src={imageUrl ? imageUrl : "/statics/images/noimage.jpg"} alt="Post"/>
-        <span className="upload-button" onClick={onClick}>Upload picture</span>
+      <Image src={imageUrl ? imageUrl : "/statics/images/noimage.jpg"} alt="Post" />
+      <strong className="upload-button" onClick={onClick}>Upload picture</strong>
     </div>
   )
 }
