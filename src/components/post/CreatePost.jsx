@@ -4,6 +4,7 @@ import { Container, Segment, Divider, Header, Form, Button } from 'semantic-ui-r
 import ChoiceType from './ChoiceType';
 import ImageUploader from '../Uploader/ImageUploader';
 import ImdbSearch from '../imdb';
+import ImdbPreview from '../imdb/Preview';
 
 import { tmpPostTemplates } from '../../config';
 
@@ -131,6 +132,11 @@ class CreatePost extends React.Component {
                       postImage={this.state.postImage}
                       setPostImage={this.setPostImage}
                     />
+            }
+
+            {
+              this.state.addImdb && this.state.movie
+                && <ImdbPreview movie={this.state.movie} />
             }
 
             <Divider section />
