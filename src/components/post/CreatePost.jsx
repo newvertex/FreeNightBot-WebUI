@@ -3,6 +3,7 @@ import { Container, Segment, Divider, Header, Form, Button } from 'semantic-ui-r
 
 import ChoiceType from './ChoiceType';
 import ImageUploader from '../Uploader/ImageUploader';
+import ImdbSearch from '../imdb';
 
 import { tmpPostTemplates } from '../../config';
 
@@ -22,6 +23,7 @@ class CreatePost extends React.Component {
       postImage: null,
       postTemplate: undefined,
       addImdb: false,
+      movie: null,
     };
 
     this.handleNewType = this.handleNewType.bind(this);
@@ -29,6 +31,7 @@ class CreatePost extends React.Component {
     this.handlePostType = this.handlePostType.bind(this);
     this.handlePostTemplate = this.handlePostTemplate.bind(this);
     this.handleAddImdb = this.handleAddImdb.bind(this);
+    this.setMovie = this.setMovie.bind(this);
     this.setPostImage = this.setPostImage.bind(this);
   }
 
@@ -64,6 +67,11 @@ class CreatePost extends React.Component {
 
   setPostImage(url) {
     this.setState({ postImage: url });
+  }
+
+  setMovie(movie) {
+    this.setState({ movie });
+    this.setPostImage(movie.Poster);
   }
 
   render() {
@@ -102,14 +110,21 @@ class CreatePost extends React.Component {
 
             {
               this.state.newType === 'template'
-                && <Form.Checkbox
-                      name='addImdb'
-                      label='Fill with imdb'
-                      value='imdb'
-                      checked={this.state.addImdb}
-                      onChange={this.handleAddImdb}
-                    />
+                &&  <Form.Group widths='equal'>
+                      <Form.Checkbox
+                        name='addImdb'
+                        label='Fill with imdb'
+                        value='imdb'
+                        checked={this.state.addImdb}
+                        onChange={this.handleAddImdb}
+                      />
+                      {
+                        this.state.addImdb
+                          && <ImdbSearch setMovie={this.setMovie}/>
+                      }
+                    </Form.Group>
             }
+
             {
               this.state.postType === 'photo'
                 && <ImageUploader
