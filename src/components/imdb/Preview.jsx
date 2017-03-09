@@ -2,7 +2,7 @@ import React from 'react';
 
 function ImdbPreview({ movie }) {
   return (
-    <div>
+    <div className="field">
       {/* // TODO: use semantic ui to display informations more pretty */}
       {movie.Title} ({movie.Year})
       {movie.Type} - {movie.imdbID}

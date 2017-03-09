@@ -126,18 +126,17 @@ class CreatePost extends React.Component {
                     </Form.Group>
             }
 
-            {
-              this.state.postType === 'photo'
-                && <ImageUploader
-                      postImage={this.state.postImage}
-                      setPostImage={this.setPostImage}
-                    />
-            }
-
-            {
-              this.state.addImdb && this.state.movie
-                && <ImdbPreview movie={this.state.movie} />
-            }
+            <Divider section />
+            <Form.Group widths='equal'>
+              <ImageUploader
+                postImage={this.state.postImage}
+                setPostImage={this.setPostImage}
+              />
+              {
+                this.state.addImdb && this.state.movie
+                  && <ImdbPreview movie={this.state.movie} />
+              }
+            </Form.Group>
 
             <Divider section />
             <Button primary type='submit'>Next</Button>
