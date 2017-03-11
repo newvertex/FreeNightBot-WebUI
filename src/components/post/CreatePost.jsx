@@ -2,7 +2,7 @@ import React from 'react';
 import { Container, Segment, Divider, Header, Form, Button } from 'semantic-ui-react';
 
 import ChoiceType from './ChoiceType';
-import ImageUploader from '../Uploader/ImageUploader';
+import ImageUploader from '../uploader/ImageUploader';
 import ImdbSearch from '../imdb';
 import ImdbPreview from '../imdb/Preview';
 

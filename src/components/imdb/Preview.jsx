@@ -1,26 +1,49 @@
 import React from 'react';
+import { Segment } from 'semantic-ui-react';
 
 function ImdbPreview({ movie }) {
   return (
-    <div className="field">
-      {/* // TODO: use semantic ui to display informations more pretty */}
-      {movie.Title} ({movie.Year})
-      {movie.Type} - {movie.imdbID}
-      Actors: {movie.Actors}
-      Director: {movie.Director}
-      Writer: {movie.Writer}
-      Genre: {movie.Genre}
-      Country: {movie.Country}
-      Language: {movie.Language}
-      Awards: {movie.Awards}
-      Rated: {movie.Rated}
-      imdbRating: {movie.imdbRating}
-      imdbVotes: {movie.imdbVotes}
-      Released: {movie.Released}
-      Runtime: {movie.Runtime}
-      Plot: {movie.Plot}
-
-    </div>
+    <Segment className="field imdb-preview">
+      <h3>
+        {movie.Title} <small>({movie.Year}) - {movie.imdbID}</small>
+      </h3>
+      <div>
+        <strong>Director: </strong>
+        <span>{movie.Director}</span>
+      </div>
+      <div>
+        <strong>Actors: </strong>
+        <span>{movie.Actors}</span>
+      </div>
+      <div>
+        <strong>Released: </strong>
+        <span>{movie.Released}</span>
+      </div>
+      <div>
+        <strong>Country: </strong>
+        <span>{movie.Country}</span>
+      </div>
+      <div>
+        <strong>Genre: </strong>
+        <span>{movie.Genre}</span>
+      </div>
+      <div>
+        <strong>Awards: </strong>
+        <span>{movie.Awards}</span>
+      </div>
+      <div>
+        <strong>imdbRating: </strong>
+        <span>{movie.imdbRating}</span>
+      </div>
+      <div>
+        <strong>imdbVotes: </strong>
+        <span>{movie.imdbVotes}</span>
+      </div>
+      <div>
+        <strong>Summary: </strong>
+        <span>{movie.Plot}</span>
+      </div>
+    </Segment>
   );
 }
 

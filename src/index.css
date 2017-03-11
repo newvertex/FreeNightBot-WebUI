@@ -120,3 +120,7 @@
 .image-box .upload-button:hover {
   background-color: rgba(0, 0, 0, 0.8);
 }
+
+.imdb-preview {
+  line-height: 1.8em;
+}
