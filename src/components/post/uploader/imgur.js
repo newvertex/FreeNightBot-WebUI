@@ -1,4 +1,4 @@
-import { IMGUR_CLIENT_ID } from '../../config';
+import { IMGUR_CLIENT_ID } from '../../../config';
 
 const API = 'https://api.imgur.com/3/upload';
 const CLIENT_ID = `Client-ID ${IMGUR_CLIENT_ID}`;

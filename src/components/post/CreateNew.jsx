@@ -2,9 +2,9 @@ import React from 'react';
 import { Container, Segment, Divider, Header, Form, Button } from 'semantic-ui-react';
 
 import ChoiceType from './ChoiceType';
-import ImageUploader from '../uploader/ImageUploader';
-import ImdbSearch from '../imdb';
-import ImdbPreview from '../imdb/Preview';
+import ImageUploader from './uploader/ImageUploader';
+import ImdbSearch from './imdb';
+import ImdbPreview from './imdb/Preview';
 
 import { tmpPostTemplates } from '../../config';
 
@@ -13,7 +13,7 @@ const PostTypes = [
   { key: 'photo', text: 'Photo', value: 'photo', icon: 'image' },
 ];
 
-class CreatePost extends React.Component {
+class CreateNewPost extends React.Component {
   constructor(props){
   	super(props);
 
@@ -148,4 +148,4 @@ class CreatePost extends React.Component {
 
 }
 
-export default CreatePost;
+export default CreateNewPost;
