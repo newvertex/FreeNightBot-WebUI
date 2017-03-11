@@ -124,3 +124,9 @@
 .imdb-preview {
   line-height: 1.8em;
 }
+
+.editor {
+  height: 12em;
+  min-height: 8em;
+  max-height: 24em;
+}
