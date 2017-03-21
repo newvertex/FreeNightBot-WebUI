@@ -14,7 +14,7 @@ class ImageUploader extends React.Component {
   	this.state = {
       modalOpen: false,
       uploading: false,
-      err: null,
+      error: null,
     };
 
     this.handleOpen = this.handleOpen.bind(this);
@@ -32,7 +32,11 @@ class ImageUploader extends React.Component {
   }
 
   uploadImage(file) {
-    this.setState({ uploading: true });
+    this.setState({
+      uploading: true,
+      error: null,
+    });
+    
     imgur(file)
       .then((res) => res.json())
       .then((res) => {
@@ -64,11 +68,11 @@ class ImageUploader extends React.Component {
         >
           <Header icon="photo" content="Upload picture" />
           <Modal.Content>
-            {this.state.err
+            {this.state.error
               && <Message
                     error
                     header="Error on uploading image!"
-                    content={this.state.err.message}
+                    content={this.state.error.message}
                   />
             }
 

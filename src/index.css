@@ -129,4 +129,16 @@
   height: 12em;
   min-height: 8em;
   max-height: 24em;
+  overflow-y: auto;
+}
+
+.rc-trigger-popup {
+  position: absolute;
+   left: -9999px;
+   top: -9999px;
+   z-index: 1050;
+}
+
+.rc-trigger-popup-hidden {
+  display: none;
 }

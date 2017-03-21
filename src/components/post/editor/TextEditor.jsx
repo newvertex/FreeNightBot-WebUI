@@ -1,13 +1,43 @@
 import React from 'react';
 import { Menu, } from 'semantic-ui-react';
 
+import LinkGenerator from './LinkGenerator';
+import EmojiPicker from './EmojiPicker';
+
 class TextEditor extends React.Component {
   state = {
+    html: '',
     rtl: false,
+    range: undefined,
   }
 
   componentDidMount() {
-    this.refs.editor.innerHTML = this.props.template;
+    this.refs.editor.innerHTML = this.props.template || "";
+  }
+
+  saveRange = (e = null) => {
+    if (e) {
+      e.preventDefault();
+    }
+    console.log('here!')
+    let sel = window.getSelection();
+		if (sel.getRangeAt && sel.rangeCount) {
+      this.setState({ range: sel.getRangeAt(0) });
+    }
+  }
+
+  restoreRange = () => {
+    let sel = window.getSelection();
+		if (this.state.range) {
+			try {
+				sel.removeAllRanges();
+		  } catch (ex) {
+				document.body.createTextRange().select();
+				document.sel.empty();
+		  }
+
+		  sel.addRange(this.state.range);
+    }
   }
 
   format = (e, data) => {
@@ -22,12 +52,18 @@ class TextEditor extends React.Component {
     document.execCommand('insertHTML', false, `<${tag}>${text}</${tag}>`);
   }
 
-  emoji = () => {
-    // TODO: show select emoji box
+  emoji = (emojiChar) => {
+    this.restoreRange();
+    document.execCommand('insertText', false, ` ${emojiChar.native} `);
   }
 
-  link = () => {
-    // TODO: show link generator
+  link = (url) => {
+    this.restoreRange();
+    document.execCommand('createLink', false, url);
+  }
+
+  onChange = (e) => {
+    this.props.output(this.refs.editor.innerHTML);
   }
 
   render() {
@@ -40,7 +76,7 @@ class TextEditor extends React.Component {
           <Menu.Item as="a" icon="code" href="code" onClick={this.code} />
           <Menu.Item as="a" icon="file code outline" href="pre" onClick={this.code} />
 
-          <Menu.Item as="a" icon="linkify" onClick={this.link} disabled />
+          <LinkGenerator add={this.link} saveRange={this.saveRange} />
           <Menu.Item as="a" icon="unlinkify" href="unlink" onClick={this.format} disabled />
 
           <Menu.Item as="a" icon="eraser" href="removeFormat" position="right" onClick={this.format} />
@@ -52,17 +88,14 @@ class TextEditor extends React.Component {
           spellCheck={false}
           suppressContentEditableWarning
           className="ui middle attached segment editor"
-          style={this.state.rtl ? {direction: 'rtl'} : {direction: 'ltr'}}
+          dir="auto"
           ref="editor"
-          onInput={this.props.onChange}
+          onInput={this.onChange}
         >
         </div>
 
         <Menu attached="bottom" icon>
-          <Menu.Item as="a" icon="smile" onClick={this.emoji}  />
-
-          <Menu.Item as="a" icon="align left" position="right" onClick={() => this.setState({ rtl: false })} />
-          <Menu.Item as="a" icon="align right" onClick={() => this.setState({ rtl: true })} />
+          <EmojiPicker add={this.emoji} saveRange={this.saveRange} />
         </Menu>
       </div>
     );

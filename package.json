@@ -6,10 +6,13 @@
     "react-scripts": "0.9.3"
   },
   "dependencies": {
+    "emoji-mart": "^0.4.4",
     "fetch-jsonp": "^1.0.6",
     "lodash": "^4.17.4",
+    "rc-trigger": "^1.9.1",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
+    "react-scripts": "^0.9.5",
     "semantic-ui-react": "^0.67.0",
     "validator": "^7.0.0"
   },
