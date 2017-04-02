@@ -1,39 +1,54 @@
 import React from 'react';
-import { Grid, Input } from 'semantic-ui-react';
-import toMarkdown from 'to-markdown';
+import { Container, Grid, Checkbox, Dropdown, Button } from 'semantic-ui-react';
 
 import TextEditor from './TextEditor';
+import PostPreview from './PostPreview';
 
 class PostEditor extends React.Component {
   state = {
     title: '',
     outputHtml: '',
-    outputMarkdown: '',
+    showPreview: false,
   }
 
   output = (html) => {
     this.setState({ outputHtml: html });
-    this.setState({ outputMarkdown: toMarkdown(html) });
+  }
+
+  onPreview = (e, data) => {
+    this.setState({ showPreview: data.checked });
+  }
+
+  renderPreview = () => {
+    return (
+      <Grid.Column>
+        <PostPreview
+          type={this.props.postType}
+          image={this.props.postImage}
+          outputHtml={this.state.outputHtml}
+        />
+      </Grid.Column>
+    );
   }
 
   render() {
     return (
-      <Grid container stackable columns='equal'>
-        <Grid.Column>
-          <Input name='postTitle' placeholder='Post title' label='Post title:' fluid
+      <Container>
+        <div className="editor-title">
+          <label htmlFor="postTitle">Post title:</label>
+          <input name='postTitle' placeholder='Post title'
             value={this.state.postTitle}
-            onChange={(e, data) => this.setState({ title: data.value })} />
-          <br/>
-          <TextEditor server={this.props.server} output={this.output} />
-        </Grid.Column>
-        {/* <Grid.Column>
-          <div dangerouslySetInnerHTML={{ __html: this.state.outputHtml }} dir="auto">
-          </div>
-          <div dir="auto">
-            {this.state.outputMarkdown}
-          </div>
-        </Grid.Column> */}
-      </Grid>
+            onChange={(e) => this.setState({ title: e.target.value })} />
+          <Checkbox label="Preview" onChange={this.onPreview} toggle />
+        </div>
+        <br />
+        <Grid stackable columns='equal'>
+          <Grid.Column>
+            <TextEditor server={this.props.server} output={this.output} />
+          </Grid.Column>
+          { this.state.showPreview && this.renderPreview() }
+        </Grid>
+      </Container>  
     );
   }
 

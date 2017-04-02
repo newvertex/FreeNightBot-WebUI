@@ -142,3 +142,22 @@
 .rc-trigger-popup-hidden {
   display: none;
 }
+
+.editor-title {
+  display: flex;
+  align-items: center;
+  margin: 5px;
+  font-size: medium;
+}
+
+.editor-title input {
+  flex: 1;
+  margin: 0 5px;
+  padding: 2px;
+  line-height: 1.8em !important;
+}
+
+.post-preview {
+  margin: auto !important;
+  width: 350px !important;
+}
