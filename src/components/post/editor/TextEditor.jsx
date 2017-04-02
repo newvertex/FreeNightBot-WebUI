@@ -19,7 +19,7 @@ class TextEditor extends React.Component {
     if (e) {
       e.preventDefault();
     }
-    console.log('here!')
+
     let sel = window.getSelection();
 		if (sel.getRangeAt && sel.rangeCount) {
       this.setState({ range: sel.getRangeAt(0) });
@@ -76,7 +76,7 @@ class TextEditor extends React.Component {
           <Menu.Item as="a" icon="code" href="code" onClick={this.code} />
           <Menu.Item as="a" icon="file code outline" href="pre" onClick={this.code} />
 
-          <LinkGenerator add={this.link} saveRange={this.saveRange} />
+          <LinkGenerator server={this.props.server} add={this.link} saveRange={this.saveRange} />
           <Menu.Item as="a" icon="unlinkify" href="unlink" onClick={this.format} disabled />
 
           <Menu.Item as="a" icon="eraser" href="removeFormat" position="right" onClick={this.format} />

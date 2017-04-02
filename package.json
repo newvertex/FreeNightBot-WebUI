@@ -2,13 +2,16 @@
   "name": "FreeNightBot-WebUI",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:3030",
   "devDependencies": {
     "react-scripts": "0.9.3"
   },
   "dependencies": {
     "emoji-mart": "^0.4.4",
+    "feathers-client": "^1.9.0",
     "fetch-jsonp": "^1.0.6",
     "lodash": "^4.17.4",
+    "node-fetch": "^1.6.3",
     "rc-trigger": "^1.9.1",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",

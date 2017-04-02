@@ -34,7 +34,15 @@ class LinkGenerator extends React.Component {
       loading: true,
       error: null,
     });
-    // TODO: get request to short the link and replace with current url
+
+    this.props.server.service('shortener').create({
+      url: this.state.url
+    }).then(res => {
+      console.log(res.shortUrl)
+      this.setState({ url: res.shortUrl, loading: false });
+    }).catch(err => {
+      this.setState({ loading: false, error: err });
+    });
   }
 
   add = () => {
@@ -66,7 +74,7 @@ class LinkGenerator extends React.Component {
                 label="Link address: "
                 placeholder="http://example.com"
                 required
-                value={this.state.value}
+                value={this.state.url}
                 onChange={this.onUrl}
                 action={
                   <Button onClick={this.shortIt}

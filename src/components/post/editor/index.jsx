@@ -24,7 +24,7 @@ class PostEditor extends React.Component {
             value={this.state.postTitle}
             onChange={(e, data) => this.setState({ title: data.value })} />
           <br/>
-          <TextEditor output={this.output} />
+          <TextEditor server={this.props.server} output={this.output} />
         </Grid.Column>
         {/* <Grid.Column>
           <div dangerouslySetInnerHTML={{ __html: this.state.outputHtml }} dir="auto">
