@@ -126,17 +126,16 @@
 }
 
 .editor {
-  height: 12em;
-  min-height: 8em;
-  max-height: 24em;
+  min-height: 180px;
+  max-height: 320px;
   overflow-y: auto;
 }
 
 .rc-trigger-popup {
   position: absolute;
-   left: -9999px;
-   top: -9999px;
-   z-index: 1050;
+  left: -9999px;
+  top: -9999px;
+  z-index: 1050;
 }
 
 .rc-trigger-popup-hidden {
@@ -160,4 +159,7 @@
 .post-preview {
   margin: auto !important;
   width: 350px !important;
+  min-height: 268px;
+  max-height: 408px;
+  overflow-y: auto;
 }

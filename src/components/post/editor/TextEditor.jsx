@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, } from 'semantic-ui-react';
+import { Menu, Checkbox } from 'semantic-ui-react';
 
 import LinkGenerator from './LinkGenerator';
 import EmojiPicker from './EmojiPicker';
@@ -96,6 +96,9 @@ class TextEditor extends React.Component {
 
         <Menu attached="bottom" icon>
           <EmojiPicker add={this.emoji} saveRange={this.saveRange} />
+          <Menu.Item position="right">
+            <Checkbox label="Preview" onChange={this.props.onPreview} toggle />
+          </Menu.Item>
         </Menu>
       </div>
     );

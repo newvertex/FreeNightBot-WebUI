@@ -7,8 +7,8 @@ import Trigger from 'rc-trigger';
 const EmojiPickerStyle = {
   width: '285px',
   position: 'absolute',
-  right: '0',
-  top: '0',
+  left: '0',
+  bottom: '0',
   zIndex: '9999',
   margin: '10px',
   textAlign: 'left',
@@ -44,7 +44,7 @@ const builtinPlacements = {
 function EmojiPicker({ add, saveRange }) {
   return (
     <Trigger
-      popupPlacement='bottomRight'
+      popupPlacement='bottomLeft'
       action={['click']}
       builtinPlacements={builtinPlacements}
       popup={
@@ -57,7 +57,7 @@ function EmojiPicker({ add, saveRange }) {
         />
       }
     >
-      <Menu.Item as="a" icon="smile" position="right" href="emoji" onClick={saveRange} />
+      <Menu.Item as="a" icon="smile" href="emoji" onClick={saveRange} />
     </Trigger>
   );
 }
