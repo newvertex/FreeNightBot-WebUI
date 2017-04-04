@@ -1,13 +1,28 @@
 import React from 'react';
 import { Menu, Icon, Dropdown } from 'semantic-ui-react';
+import Avatar from 'react-avatar';
+import Backend from './../../backend';
 
-import Avatar from './Avatar';
+function userAvatar(name) {
+  return (
+    <span>
+      <Avatar name={name} size={48} round style={{ marginRight: '4px' }} />
+      <span className='hide-on-mobile'>{name}</span>
+    </span >
+  )
+}
 
-const UserMenu = ({ user, onNewClick }) => (
+function logout() {
+  Backend.app.logout();
+  window.location.href = '/';
+}
+
+const UserMenu = ({ user }) => (
   <Menu.Menu position='right'>
     <Menu.Item
       name='new'
-      onClick={onNewClick}
+      as='a'
+      href='/post/new'
     >
       <Icon name='add' />
       <span className='hide-on-mobile'>New</span>
@@ -16,7 +31,7 @@ const UserMenu = ({ user, onNewClick }) => (
     <Dropdown
       item
       pointing
-      trigger={<Avatar avatar={user.avatar} name={user.displayName} />}
+      trigger={userAvatar(user.name)}
     >
       <Dropdown.Menu>
         <Dropdown.Header>
@@ -30,7 +45,7 @@ const UserMenu = ({ user, onNewClick }) => (
         <Dropdown.Item text='Help' icon='help' />
         <Dropdown.Divider />
         <Dropdown.Item text='Settings' icon='settings' disabled />
-        <Dropdown.Item text='Sign Out' icon='sign out' />
+        <Dropdown.Item text='Sign Out' icon='sign out' onClick={() => logout()} />
       </Dropdown.Menu>
     </Dropdown>
   </Menu.Menu>
@@ -38,7 +53,6 @@ const UserMenu = ({ user, onNewClick }) => (
 
 UserMenu.propTypes = {
   user: React.PropTypes.object.isRequired,
-  onNewClick: React.PropTypes.func.isRequired,
 };
 
 export default UserMenu;

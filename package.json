@@ -14,7 +14,9 @@
     "node-fetch": "^1.6.3",
     "rc-trigger": "^1.9.1",
     "react": "^15.4.2",
+    "react-avatar": "^2.3.0",
     "react-dom": "^15.4.2",
+    "react-router-dom": "^4.0.0",
     "react-scripts": "^0.9.5",
     "semantic-ui-react": "^0.67.0",
     "validator": "^7.0.0"

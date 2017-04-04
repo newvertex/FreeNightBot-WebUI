@@ -1,19 +1,16 @@
 import React from 'react';
 import { Menu, Icon } from 'semantic-ui-react';
 
-const GuestMenu = ({ onLoginClick }) => (
-  <Menu.Item
+const GuestMenu = () => (
+  < Menu.Item
     name='login'
-    onClick={onLoginClick}
     position='right'
+    as='a'
+    href='/login'
   >
     <Icon name='sign in' />
     Sign in
-  </Menu.Item>
+  </Menu.Item >
 )
-
-GuestMenu.propTypes = {
-  onLoginClick: React.PropTypes.func.isRequired,
-};
 
 export default GuestMenu;

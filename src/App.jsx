@@ -1,36 +1,71 @@
 import React, { Component } from 'react';
-import feathers from 'feathers-client';
-import fetch from 'node-fetch';
+import { Segment, Loader, Dimmer } from 'semantic-ui-react';
+import { Route, Redirect } from 'react-router-dom';
 
-import Header from './components/header/Header';
-import Footer from './components/footer/Footer';
+import Backend from './backend';
+import Header from './components/header';
+import Footer from './components/footer';
+import Home from './components/home';
+import Login from './components/login';
+import Help from './components/help';
 
-import PostEditor from './components/post/editor';
-
-import { tmpBrand, tmpUser, API_URL } from './config';
+import { brand } from './config';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
+  state = {
+    isAuth: false,
+    user: null,
+    renderApp: false,
+  }
 
-    this.server = feathers()
-      .configure(feathers.rest(API_URL).fetch(fetch))
-      .configure(feathers.hooks())
-      .configure(feathers.authentication({
-        storage: window.localStorage
-      }));
+  componentWillMount() {
+    Backend.app.authenticate()
+      .then(res => {
+        this.setState({
+          isAuth: true,
+          user: res.data,
+        });
+        this.renderApp();
+      })
+      .catch(err => {
+        this.setState({
+          isAuth: false,
+          user: null,
+        });
+        this.renderApp();
+      });
+  }
+
+  renderApp = () => {
+    setTimeout(() => {
+      this.setState({ renderApp: true });
+    }, 300);
   }
 
   render() {
-    return (
-      <div className='main-wrapper'>
-        <Header brand={tmpBrand} user={tmpUser} />
-        <div className='main-content v-align'>
-          <PostEditor server={this.server} />
+    if (this.state.renderApp) {
+      return (
+        <div className='main-wrapper'>
+          <Header brand={brand} user={this.state.user} isAuth={this.state.isAuth} />
+          <div className='main-content v-align'>
+            <Route exact path='/' render={() => <Home isAuth={this.state.isAuth} />} />
+            <Route path='/login' render={() => (
+              !this.state.isAuth ? <Login /> : <Redirect to="/" />
+            )} />
+            <Route path='/help' component={Help} />
+          </div>
+          <Footer brand={brand} />
         </div>
-        <Footer brand={tmpBrand} />
-      </div>
-    );
+      );
+    } else {
+      return (
+        <Segment className='main-wrapper'>
+          <Dimmer active inverted>
+            <Loader inverted>Loading</Loader>
+          </Dimmer>
+        </Segment>
+      )
+    }
   }
 
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid, Header } from 'semantic-ui-react';
 
-import Login from '../../login/Login';
+import Login from '../../login';
 
 const Showcase = () => (
   <div>

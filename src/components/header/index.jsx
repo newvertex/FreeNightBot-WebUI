@@ -10,8 +10,7 @@ const TopMenu = ({ brand, isAuth, user }) => (
     <Container>
       <Brand logo={brand.logo} title={brand.title} subTitle={brand.subTitle} />
 
-      {isAuth ? <UserMenu user={user} onNewClick={()=>console.log('new!')}/>
-              : <GuestMenu onLoginClick={() => console.log('Login!')}/>}
+      {isAuth ? <UserMenu user={user} /> : <GuestMenu />}
     </Container>
   </Menu>
 );
@@ -23,7 +22,7 @@ TopMenu.propTypes = {
 };
 
 TopMenu.defaultProps = {
-  isAuth: true,
+  isAuth: false,
 };
 
 export default TopMenu;
