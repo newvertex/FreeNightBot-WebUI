@@ -1,5 +1,6 @@
 import React from 'react';
 import { Container, Grid, Form, Select, Button, Segment } from 'semantic-ui-react';
+import Backend from './../../../backend';
 
 import TextEditor from './TextEditor';
 import PostPreview from './PostPreview';
@@ -16,6 +17,11 @@ class PostEditor extends React.Component {
     ],
     primaryDestination: 'none',
     secondaryDestination: 'none',
+    loading: false,
+  }
+
+  componentWillMount() {
+    this.onRefreshChannels();
   }
 
   output = (html) => {
@@ -27,12 +33,32 @@ class PostEditor extends React.Component {
   }
 
   onSelectDestination = (e, data) => {
-    this.setState({ [data.name] : data.value });
+    this.setState({ [data.name]: data.value });
   }
 
   onRefreshChannels = (e) => {
-    // TODO: get channels list from the server
-    // this.setState({ channels: Object.assign({}, defaultChannels, userChannels) });
+    if (e) {
+      e.preventDefault();
+    }
+
+    this.setState({ loading: true });
+
+    //get channels list from the server
+    Backend.app.service('tusers').find()
+      .then(res => {
+        let userChannels = [];
+
+        if (res.data.keys) {
+          userChannels = res.data.keys.map(item => {
+            return { key: item.key, value: item.key, text: item.key }
+          });
+        }
+
+        this.setState({
+          channels: [defaultChannels, ...userChannels],
+          loading: false,
+        });
+      });
   }
 
   renderPreview = () => {
@@ -51,7 +77,7 @@ class PostEditor extends React.Component {
     return (
       <div>
         <p />
-        <Segment>
+        <Segment loading={this.state.loading}>
           <Form>
             <Form.Group widths="equal">
               <Form.Field>
@@ -64,7 +90,7 @@ class PostEditor extends React.Component {
               </Form.Field>
               <Form.Field width="1">
                 <label>Refresh</label>
-                <Button icon="refresh" basic />
+                <Button icon="refresh" basic onClick={this.onRefreshChannels} />
               </Form.Field>
             </Form.Group>
           </Form>
@@ -89,12 +115,12 @@ class PostEditor extends React.Component {
         </Form>
         <Grid stackable columns='equal'>
           <Grid.Column>
-            <TextEditor server={this.props.server} output={this.output} onPreview={this.onPreview}/>
+            <TextEditor output={this.output} onPreview={this.onPreview} />
           </Grid.Column>
           { this.state.showPreview && this.renderPreview() }
         </Grid>
         {this.renderPublish()}
-      </Container>  
+      </Container>
     );
   }
 
