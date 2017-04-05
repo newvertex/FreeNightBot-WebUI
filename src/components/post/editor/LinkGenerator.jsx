@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal, Form, Button, Menu, Dimmer, Loader, Message } from 'semantic-ui-react';
 import isURL from 'validator/lib/isURL';
+import Backend from './../../../backend';
 
 class LinkGenerator extends React.Component {
   state = {
@@ -35,10 +36,9 @@ class LinkGenerator extends React.Component {
       error: null,
     });
 
-    this.props.server.service('shortener').create({
+    Backend.app.service('shortener').create({
       url: this.state.url
     }).then(res => {
-      console.log(res.shortUrl)
       this.setState({ url: res.shortUrl, loading: false });
     }).catch(err => {
       this.setState({ loading: false, error: err });
