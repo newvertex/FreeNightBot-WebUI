@@ -34,6 +34,7 @@ class CreateNewPost extends React.Component {
     this.handleAddImdb = this.handleAddImdb.bind(this);
     this.setMovie = this.setMovie.bind(this);
     this.setPostImage = this.setPostImage.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
   handleNewType(e, data) {
@@ -75,13 +76,34 @@ class CreateNewPost extends React.Component {
     this.setPostImage(movie.Poster);
   }
 
+  onSubmit(e) {
+    e.preventDefault();
+    this.props.handleSubmit({ ...this.state });
+  }
+
+  isValid = () => {
+    let error = false;
+
+    let isPhoto = this.state.postType === 'photo';
+    if (isPhoto) {
+      error = this.state.postImage ? false : true;
+    }
+
+    let isTemplate = this.state.newType === 'template';
+    if (isTemplate) {
+      error = this.state.postTemplate ? false : true;
+    }
+
+    return error;
+  }
+
   render() {
     return (
       <Container text>
         <Segment basic>
           <Header size='large' content='Create a new post' subheader='A post contains Text, Photo, Links and Emoji.' />
           <Divider />
-          <Form>
+          <Form onSubmit={this.onSubmit}>
             <ChoiceType newType={this.state.newType} onChange={this.handleNewType} />
             <Divider section />
 
@@ -139,7 +161,7 @@ class CreateNewPost extends React.Component {
             </Form.Group>
 
             <Divider section />
-            <Button primary type='submit'>Next</Button>
+            <Button primary type='submit' disabled={this.isValid()}>Next</Button>
           </Form>
         </Segment>
       </Container>

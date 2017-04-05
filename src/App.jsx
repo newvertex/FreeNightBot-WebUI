@@ -8,6 +8,7 @@ import Footer from './components/footer';
 import Home from './components/home';
 import Login from './components/login';
 import Help from './components/help';
+import Post from './components/post';
 
 import { brand } from './config';
 
@@ -51,6 +52,9 @@ class App extends Component {
             <Route exact path='/' render={() => <Home isAuth={this.state.isAuth} />} />
             <Route path='/login' render={() => (
               !this.state.isAuth ? <Login /> : <Redirect to="/" />
+            )} />
+            <Route exact path='/post' render={() => (
+              this.state.isAuth ? <Post /> : <Redirect to="/login" />
             )} />
             <Route path='/help' component={Help} />
           </div>
