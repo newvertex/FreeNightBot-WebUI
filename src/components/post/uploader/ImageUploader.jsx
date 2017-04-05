@@ -55,10 +55,14 @@ class ImageUploader extends React.Component {
       })
   }
 
+  removeImage = () => {
+    this.props.setPostImage(null);
+  }
+
   render(){
     return(
       <div className="field">
-        <ImageBox imageUrl={this.props.postImage} onClick={this.handleOpen} />
+        <ImageBox imageUrl={this.props.postImage} onClick={this.handleOpen} onRemoveImage={this.removeImage} />
         <Modal
           open={this.state.modalOpen}
           onClose={this.handleClose}
