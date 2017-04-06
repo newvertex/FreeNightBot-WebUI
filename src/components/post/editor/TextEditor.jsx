@@ -3,12 +3,14 @@ import { Menu, Checkbox } from 'semantic-ui-react';
 
 import LinkGenerator from './LinkGenerator';
 import EmojiPicker from './EmojiPicker';
+import EditorHelp from './Help';
 
 class TextEditor extends React.Component {
   state = {
     html: '',
     rtl: false,
     range: undefined,
+    showHelp: false,
   }
 
   componentDidMount() {
@@ -66,6 +68,11 @@ class TextEditor extends React.Component {
     this.props.output(this.refs.editor.innerHTML);
   }
 
+  toggleHelp = (e) => {
+    e.preventDefault();
+    this.setState({ showHelp: !this.state.showHelp });
+  }
+
   render() {
     return (
       <div>
@@ -77,9 +84,11 @@ class TextEditor extends React.Component {
           <Menu.Item as="a" icon="file code outline" href="pre" onClick={this.code} />
 
           <LinkGenerator add={this.link} saveRange={this.saveRange} />
-          <Menu.Item as="a" icon="unlinkify" href="unlink" onClick={this.format} disabled />
+          <Menu.Item as="a" icon="unlinkify" href="unlink" onClick={this.format} />
 
-          <Menu.Item as="a" icon="eraser" href="removeFormat" position="right" onClick={this.format} />
+          <Menu.Item as="a" icon="eraser" href="removeFormat" onClick={this.format} />
+
+          <Menu.Item as="a" icon="help circle outline" href="editorHelp" position="right" active={this.state.showHelp} onClick={this.toggleHelp} />
 
         </Menu>
 
@@ -100,6 +109,8 @@ class TextEditor extends React.Component {
             <Checkbox label="Preview" onChange={this.props.onPreview} toggle />
           </Menu.Item>
         </Menu>
+
+        {this.state.showHelp && <EditorHelp />}
       </div>
     );
   }
