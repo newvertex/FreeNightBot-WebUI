@@ -1,27 +1,40 @@
 import React from 'react';
-import { Container, Grid, Form, Select, Button, Segment } from 'semantic-ui-react';
+import { Container, Grid, Form, Select, Button, Segment, Message, List, Icon } from 'semantic-ui-react';
 import Backend from './../../../backend';
 
 import TextEditor from './TextEditor';
 import PostPreview from './PostPreview';
 
-const defaultChannels = { key: 'none', value: 'none', text: 'None' };
+const NOTES = {
+  title: 'To save your post as a template you have to set post title.',
+  primaryDestination: `To be able publish your post, first select the primary destination. If you haven't any destination key please read help to find how to create one.`,
+};
 
 class PostEditor extends React.Component {
   state = {
     title: '',
     outputHtml: '',
     showPreview: false,
-    channels: [
-      defaultChannels,
-    ],
-    primaryDestination: 'none',
-    secondaryDestination: 'none',
+    channels: [], // { key: 'A...', value: '1...', text: 'A...' }
+    primaryDestination: undefined,
+    secondaryDestination: undefined,
     loading: false,
+    requestResult: null, // { ok: true, message: 'example message' }
   }
 
   componentWillMount() {
     this.onRefreshChannels();
+    console.log('here', this.props.data)
+    // this.props.data containes:
+    // newType, postTitle, postType, postImage, postTemplate, addImdb, Movie
+
+    this.setState({ title: this.props.data.postTitle });
+
+    if (this.props.data.newType === 'template') {
+      this.getTemplate();
+    }
+
+
   }
 
   output = (html) => {
@@ -50,23 +63,106 @@ class PostEditor extends React.Component {
 
         if (res.data.keys) {
           userChannels = res.data.keys.map(item => {
-            return { key: item.key, value: item.key, text: item.key }
+            return { key: item.key, value: item.kid, text: item.key }
           });
         }
 
         this.setState({
-          channels: [defaultChannels, ...userChannels],
+          channels: userChannels,
           loading: false,
         });
       });
+  }
+
+  getTemplate = () => {
+    // Get data about template from this.props.data to find tempalte content
+    // postTemplate
+    console.log('getting template from server!')
+    if (this.props.data.addImdb && this.props.data.movie) {
+      this.fillWithImdb();
+    }
+  }
+
+  fillWithImdb = () => {
+    // Fill the template placeholders with movie
+    console.log('replace template placeholders')
+  }
+
+  onSaveTemplate = (e) => {
+    e.preventDefault();
+    this.setState({ loading: true });
+
+    Backend.app.service('templates').create({
+      title: this.state.title,
+      content: this.state.outputHtml,
+    }).then(res => {
+      this.setState({
+        loading: false,
+        requestResult: {
+          ok: true,
+          message: `Template saved successfuly with title: ${this.state.title}.`
+        }
+      });
+      this.autoDismissResult();
+    }).catch(err => {
+      this.setState({
+        loading: false,
+        requestResult: {
+          ok: false,
+          message: `Template can't save, ${err.message}.`
+        }
+      });
+      this.autoDismissResult();
+    })
+  }
+
+  onPublish = (e) => {
+    e.preventDefault();
+    this.setState({ loading: true });
+    
+    // this.props.data.[postType, postImage]
+    // this.state.[title, primaryDestination, secondaryDestination, postContent]
+    console.log('Publish the post')
+  }
+
+  autoDismissResult = () => {
+    setTimeout(() => {
+      this.setState({ requestResult: null });
+    }, 8000);
+  }
+
+  renderRequestResult = () => {
+    if (this.state.requestResult) {
+      if (this.state.requestResult.ok) {
+        return <Message header="Success" icon="checkmark" content={this.state.requestResult.message} success />
+      } else {
+        return <Message header="Error" icon="warning circle" content={this.state.requestResult.message} error />
+      }
+    }
+  }
+
+  renderWarning = () => {
+    if (!this.state.title || !this.state.primaryDestination) {
+      return (
+        <Message warning>
+          <Message.Header><Icon name="exclamation triangle" /> Note</Message.Header>
+          <List bulleted>
+            {!this.state.title && <List.Item content={NOTES.title} />}
+            {!this.state.primaryDestination && <List.Item content={NOTES.primaryDestination} />}
+          </List>
+        </Message>
+      );
+    }
+
+    return null;
   }
 
   renderPreview = () => {
     return (
       <Grid.Column>
         <PostPreview
-          type={this.props.postType}
-          image={this.props.postImage}
+          type={this.props.data.postType}
+          image={this.props.data.postImage}
           outputHtml={this.state.outputHtml}
         />
       </Grid.Column>
@@ -94,7 +190,10 @@ class PostEditor extends React.Component {
               </Form.Field>
             </Form.Group>
           </Form>
-          <Button onClick={this.onPublish} positive>Publish</Button>
+          <Button onClick={this.onSaveTemplate} primary disabled={this.state.title ? false : true}>Save as template</Button>
+          <Button onClick={this.onPublish} positive disabled={this.state.primaryDestination ? false : true}>Publish</Button>
+          {this.renderWarning()}
+          {this.renderRequestResult()}
         </Segment>
       </div>
     );
@@ -108,7 +207,7 @@ class PostEditor extends React.Component {
             <Form.Field>
               <label htmlFor="postTitle">Post title</label>
               <input name='postTitle' placeholder='Enter current post title'
-                value={this.state.postTitle}
+                value={this.state.title}
                 onChange={(e) => this.setState({ title: e.target.value })} />
             </Form.Field>
           </Form.Group>
@@ -117,7 +216,7 @@ class PostEditor extends React.Component {
           <Grid.Column>
             <TextEditor output={this.output} onPreview={this.onPreview} />
           </Grid.Column>
-          { this.state.showPreview && this.renderPreview() }
+          {this.state.showPreview && this.renderPreview()}
         </Grid>
         {this.renderPublish()}
       </Container>
