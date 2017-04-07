@@ -28,6 +28,7 @@ export default function () {
         you can use following placeholders on any place of the text
         then placeholders will be replaced with actual movie info.
       </p>
+      <p><b>Note:</b> To save your post as a template you have to set post title.</p>
 
       <List items={list} bulleted />
     </Message>
