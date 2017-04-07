@@ -1,8 +1,10 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 
+// TODO: 
 const Dashboard = () => (
   <div>
-    TODO: Dashboard
+    <Redirect to="/post" />
   </div>
 );
 
