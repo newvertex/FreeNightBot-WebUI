@@ -173,7 +173,7 @@
 .post-preview {
   margin: auto !important;
   width: 350px !important;
-  min-height: 268px;
+  min-height: 268px !important;
   max-height: 408px;
   overflow-y: auto;
 }

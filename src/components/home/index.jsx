@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Dashboard from './dashboard/Dashboard';
+import Dashboard from './dashboard';
 import Showcase from './showcase/Showcase';
 
 const Home = ({ isAuth }) => (

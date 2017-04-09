@@ -3,18 +3,18 @@ import React from 'react';
 import { Message, Icon, List } from 'semantic-ui-react';
 
 const list = [
-  '${movie.Title} : The movie title',
-  '${movie.Year} : Production date',
-  '${movie.imdbID} : Movie id on Imdb',
-  '${movie.Director} : Movie director',
-  '${movie.Actors} : Movie actors',
-  '${movie.Released} : Movie release date',
-  '${movie.Country} : Which country is made',
-  '${movie.Genre} : The genre of the movie',
-  '${movie.Awards} : Awards for the movie',
-  '${movie.imdbRating} : Movie rate on Imdb',
-  '${movie.imdbVotes} : Movie votes on Imdb',
-  '${movie.Plot} : Short summary about the movie',
+  '{movie.Title} : The movie title',
+  '{movie.Year} : Production date',
+  '{movie.imdbID} : Movie id on Imdb',
+  '{movie.Director} : Movie director',
+  '{movie.Actors} : Movie actors',
+  '{movie.Released} : Movie release date',
+  '{movie.Country} : Which country is made',
+  '{movie.Genre} : The genre of the movie',
+  '{movie.Awards} : Awards for the movie',
+  '{movie.imdbRating} : Movie rate on Imdb',
+  '{movie.imdbVotes} : Movie votes on Imdb',
+  '{movie.Plot} : Short summary about the movie',
 ];
 
 export default function () {
