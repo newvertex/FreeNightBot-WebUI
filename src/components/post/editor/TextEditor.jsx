@@ -13,10 +13,6 @@ class TextEditor extends React.Component {
     showHelp: false,
   }
 
-  componentDidMount() {
-    this.refs.editor.innerHTML = this.props.template || "";
-  }
-
   saveRange = (e = null) => {
     if (e) {
       e.preventDefault();

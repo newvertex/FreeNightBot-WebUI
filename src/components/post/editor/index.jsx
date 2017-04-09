@@ -10,6 +10,8 @@ const NOTES = {
   primaryDestination: `To be able publish your post, first select the primary destination. If you haven't any destination key please read help to find how to create one.`,
 };
 
+const defaultChannel = { key: 'none', value: 'none', text: 'None' };
+
 class PostEditor extends React.Component {
   state = {
     title: '',
@@ -43,7 +45,12 @@ class PostEditor extends React.Component {
   }
 
   onSelectDestination = (e, data) => {
-    this.setState({ [data.name]: data.value });
+    let value = data.value;
+    if (value === 'none') {
+      value = undefined;
+    }
+
+    this.setState({ [data.name]: value });
   }
 
   onRefreshChannels = (e) => {
@@ -63,6 +70,8 @@ class PostEditor extends React.Component {
             return { key: item.key, value: item.kid, text: item.key }
           });
         }
+
+        userChannels.splice(0, 0, defaultChannel);
 
         this.setState({
           channels: userChannels,
@@ -135,7 +144,8 @@ class PostEditor extends React.Component {
 
     // this.props.data.[postType, postImage]
     // this.state.[title, primaryDestination, secondaryDestination, postContent]
-    console.log('Publish the post')
+    console.log('Publish the post', this.state.primaryDestination, this.state.secondaryDestination)
+    this.setState({ loading: false });
   }
 
   autoDismissResult = () => {

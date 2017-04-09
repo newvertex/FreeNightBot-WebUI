@@ -36,11 +36,11 @@ const UserMenu = ({ user }) => (
       <Dropdown.Menu>
         <Dropdown.Header>
           <span className='no-cap'>
-            Signed in as <strong>{user.username}</strong>
+            Signed in as <strong>{user.email}</strong>
           </span>
         </Dropdown.Header>
         <Dropdown.Divider />
-        <Dropdown.Item text='Dashboard' icon='dashboard' disabled />
+        <Dropdown.Item text='Dashboard' icon='dashboard' onClick={() => {window.location.href = '/'}} />
         <Dropdown.Item text='Profile' icon='user' disabled />
         <Dropdown.Item text='Help' icon='help' />
         <Dropdown.Divider />

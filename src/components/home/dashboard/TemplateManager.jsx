@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Icon, Menu } from 'semantic-ui-react';
+import { Table, Icon } from 'semantic-ui-react';
 import { Redirect } from 'react-router-dom';
 import Backend from './../../../backend';
 
