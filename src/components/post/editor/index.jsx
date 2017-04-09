@@ -13,6 +13,7 @@ const NOTES = {
 class PostEditor extends React.Component {
   state = {
     title: '',
+    defaultContent: '',
     outputHtml: '',
     showPreview: false,
     channels: [], // { key: 'A...', value: '1...', text: 'A...' }
@@ -24,17 +25,13 @@ class PostEditor extends React.Component {
 
   componentWillMount() {
     this.onRefreshChannels();
-    console.log('here', this.props.data)
     // this.props.data containes:
     // newType, postTitle, postType, postImage, postTemplate, addImdb, Movie
-
     this.setState({ title: this.props.data.postTitle });
 
     if (this.props.data.newType === 'template') {
       this.getTemplate();
     }
-
-
   }
 
   output = (html) => {
@@ -77,15 +74,30 @@ class PostEditor extends React.Component {
   getTemplate = () => {
     // Get data about template from this.props.data to find tempalte content
     // postTemplate
-    console.log('getting template from server!')
-    if (this.props.data.addImdb && this.props.data.movie) {
-      this.fillWithImdb();
-    }
+    Backend.app.service('templates').get(this.props.data.postTemplate)
+      .then(res => {
+        if (this.props.data.addImdb && this.props.data.movie) {
+          this.fillWithImdb(res.content, this.props.data.movie);
+        } else {
+          this.setState({
+            defaultContent: res.content,
+            outputHtml: res.content,
+          });
+        }
+      });
   }
 
-  fillWithImdb = () => {
+  fillWithImdb = (tempalte = '', movie) => {
     // Fill the template placeholders with movie
-    console.log('replace template placeholders')
+    let content = tempalte;
+    for (let value in movie) {
+      content = content.replace(`{movie.${value}}`, movie[value]);
+    }
+
+    this.setState({
+      defaultContent: content,
+      outputHtml: content,
+    });
   }
 
   onSaveTemplate = (e) => {
@@ -95,6 +107,7 @@ class PostEditor extends React.Component {
     Backend.app.service('templates').create({
       title: this.state.title,
       content: this.state.outputHtml,
+      postType: this.props.data.postType,
     }).then(res => {
       this.setState({
         loading: false,
@@ -119,7 +132,7 @@ class PostEditor extends React.Component {
   onPublish = (e) => {
     e.preventDefault();
     this.setState({ loading: true });
-    
+
     // this.props.data.[postType, postImage]
     // this.state.[title, primaryDestination, secondaryDestination, postContent]
     console.log('Publish the post')
@@ -214,7 +227,7 @@ class PostEditor extends React.Component {
         </Form>
         <Grid stackable columns='equal'>
           <Grid.Column>
-            <TextEditor output={this.output} onPreview={this.onPreview} />
+            <TextEditor defaultContent={this.state.defaultContent} output={this.output} onPreview={this.onPreview} />
           </Grid.Column>
           {this.state.showPreview && this.renderPreview()}
         </Grid>

@@ -23,22 +23,22 @@ class TextEditor extends React.Component {
     }
 
     let sel = window.getSelection();
-		if (sel.getRangeAt && sel.rangeCount) {
+    if (sel.getRangeAt && sel.rangeCount) {
       this.setState({ range: sel.getRangeAt(0) });
     }
   }
 
   restoreRange = () => {
     let sel = window.getSelection();
-		if (this.state.range) {
-			try {
-				sel.removeAllRanges();
-		  } catch (ex) {
-				document.body.createTextRange().select();
-				document.sel.empty();
-		  }
+    if (this.state.range) {
+      try {
+        sel.removeAllRanges();
+      } catch (ex) {
+        document.body.createTextRange().select();
+        document.sel.empty();
+      }
 
-		  sel.addRange(this.state.range);
+      sel.addRange(this.state.range);
     }
   }
 
@@ -100,6 +100,7 @@ class TextEditor extends React.Component {
           dir="auto"
           ref="editor"
           onInput={this.onChange}
+          dangerouslySetInnerHTML={{ __html: this.props.defaultContent }}
         >
         </div>
 

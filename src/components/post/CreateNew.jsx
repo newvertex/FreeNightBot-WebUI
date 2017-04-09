@@ -6,7 +6,7 @@ import ImageUploader from './uploader/ImageUploader';
 import ImdbSearch from './imdb';
 import ImdbPreview from './imdb/Preview';
 
-import { tmpPostTemplates } from '../../config';
+import Backend from '../../backend';
 
 const PostTypes = [
   { key: 'text', text: 'Text', value: 'text', icon: 'file text outline' },
@@ -14,10 +14,10 @@ const PostTypes = [
 ];
 
 class CreateNewPost extends React.Component {
-  constructor(props){
-  	super(props);
+  constructor(props) {
+    super(props);
 
-  	this.state = {
+    this.state = {
       newType: 'empty',
       postTitle: '',
       postType: 'text',
@@ -25,6 +25,7 @@ class CreateNewPost extends React.Component {
       postTemplate: undefined,
       addImdb: false,
       movie: null,
+      templates: [],  // { key: 'emptyPoster', text: 'Empty Poster', value: 'emptyPoster', 'data-postType': 'photo' },
     };
 
     this.handleNewType = this.handleNewType.bind(this);
@@ -37,12 +38,34 @@ class CreateNewPost extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
+  getTemplatesList = () => {
+    // Get templates list from the server
+    Backend.app.service('templates').find({
+      query: {
+        $select: ['id', 'title', 'postType']
+      }
+    }).then(res => {
+      let templateList = [];
+      if (res.data) {
+        templateList = res.data.map(t => {
+          return { key: t._id, text: t.title, value: t._id, 'data-postType': t.postType };
+        });
+      }
+
+      this.setState({ templates: templateList });
+    });
+  }
+
   handleNewType(e, data) {
     this.setState({
       newType: data.value,
       postType: 'text',
       postTemplate: undefined,
       addImdb: false,
+    }, () => {
+      if (this.state.newType === 'template' && !this.state.templates.length) {
+        this.getTemplatesList();
+      }
     });
   }
 
@@ -111,41 +134,41 @@ class CreateNewPost extends React.Component {
               <Form.Input name='postTitle' placeholder='Post title' label='Post title'
                 value={this.state.postTitle} onChange={this.handlePostTitle} />
 
-              { this.state.newType === 'empty'
-                  ? <Form.Select
-                      name='postType'
-                      placeholder='Select type of post'
-                      label='Type of post'
-                      options={PostTypes}
-                      value={this.state.postType}
-                      onChange={this.handlePostType}
-                    />
-                  : <Form.Select
-                      name='postTemplate'
-                      placeholder='Select post template'
-                      label='Post template'
-                      options={tmpPostTemplates}
-                      value={this.state.postTemplate}
-                      onChange={this.handlePostTemplate}
-                    />
+              {this.state.newType === 'empty'
+                ? <Form.Select
+                  name='postType'
+                  placeholder='Select type of post'
+                  label='Type of post'
+                  options={PostTypes}
+                  value={this.state.postType}
+                  onChange={this.handlePostType}
+                />
+                : <Form.Select
+                  name='postTemplate'
+                  placeholder='Select post template'
+                  label='Post template'
+                  options={this.state.templates}
+                  value={this.state.postTemplate}
+                  onChange={this.handlePostTemplate}
+                />
               }
             </Form.Group>
 
             {
               this.state.newType === 'template'
-                &&  <Form.Group widths='equal'>
-                      <Form.Checkbox
-                        name='addImdb'
-                        label='Fill with imdb'
-                        value='imdb'
-                        checked={this.state.addImdb}
-                        onChange={this.handleAddImdb}
-                      />
-                      {
-                        this.state.addImdb
-                          && <ImdbSearch setMovie={this.setMovie}/>
-                      }
-                    </Form.Group>
+              && <Form.Group widths='equal'>
+                <Form.Checkbox
+                  name='addImdb'
+                  label='Fill with imdb'
+                  value='imdb'
+                  checked={this.state.addImdb}
+                  onChange={this.handleAddImdb}
+                />
+                {
+                  this.state.addImdb
+                  && <ImdbSearch setMovie={this.setMovie} />
+                }
+              </Form.Group>
             }
 
             <Divider section />
@@ -156,7 +179,7 @@ class CreateNewPost extends React.Component {
               />
               {
                 this.state.addImdb && this.state.movie
-                  && <ImdbPreview movie={this.state.movie} />
+                && <ImdbPreview movie={this.state.movie} />
               }
             </Form.Group>
 
