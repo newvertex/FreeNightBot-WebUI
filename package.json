@@ -2,7 +2,6 @@
   "name": "FreeNightBot-WebUI",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:3030",
   "devDependencies": {
     "react-scripts": "0.9.3"
   },

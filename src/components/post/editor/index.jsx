@@ -144,8 +144,29 @@ class PostEditor extends React.Component {
 
     // this.props.data.[postType, postImage]
     // this.state.[title, primaryDestination, secondaryDestination, postContent]
-    console.log('Publish the post', this.state.primaryDestination, this.state.secondaryDestination)
-    this.setState({ loading: false });
+    Backend.app.service('bot').create({
+      type: this.props.data.postType,
+      chatId: this.state.primaryDestination,
+      photo: this.props.data.postImage,
+      message: this.state.content,
+    }).then(res => {
+      this.setState({
+        loading: false,
+        requestResult: {
+          ok: true,
+          message: 'Post published successfully.'
+        }
+      });
+    }).catch(err => {
+      this.setState({
+        loading: false,
+        requestResult: {
+          ok: false,
+          message: 'Error on publish!'
+        }
+      });
+    });
+
   }
 
   autoDismissResult = () => {
@@ -203,10 +224,10 @@ class PostEditor extends React.Component {
                 <label htmlFor="primaryDestination">Primary destination</label>
                 <Select name="primaryDestination" placeholder="Select primary channel/group" options={this.state.channels} onChange={this.onSelectDestination} required />
               </Form.Field>
-              <Form.Field>
+              {/*<Form.Field>
                 <label htmlFor="secondaryDestination">Secondary destination</label>
                 <Select name="secondaryDestination" placeholder="Select secondary channel/group" options={this.state.channels} onChange={this.onSelectDestination} />
-              </Form.Field>
+              </Form.Field>*/}
               <Form.Field width="1">
                 <label>Refresh</label>
                 <Button icon="refresh" basic onClick={this.onRefreshChannels} />
