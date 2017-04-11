@@ -76,8 +76,8 @@ class TextEditor extends React.Component {
           <Menu.Item as="a" icon="bold" href="bold" onClick={this.format} />
           <Menu.Item as="a" icon="italic" href="italic" onClick={this.format} />
 
-          <Menu.Item as="a" icon="code" href="code" onClick={this.code} />
-          <Menu.Item as="a" icon="file code outline" href="pre" onClick={this.code} />
+          {/*<Menu.Item as="a" icon="code" href="code" onClick={this.code} />
+          <Menu.Item as="a" icon="file code outline" href="pre" onClick={this.code} />*/}
 
           <LinkGenerator add={this.link} saveRange={this.saveRange} />
           <Menu.Item as="a" icon="unlinkify" href="unlink" onClick={this.format} />
@@ -96,8 +96,10 @@ class TextEditor extends React.Component {
           dir="auto"
           ref="editor"
           onInput={this.onChange}
-          dangerouslySetInnerHTML={{ __html: this.props.defaultContent }}
         >
+          <p>
+            {this.props.defaultContent}
+          </p>
         </div>
 
         <Menu attached="bottom" icon>

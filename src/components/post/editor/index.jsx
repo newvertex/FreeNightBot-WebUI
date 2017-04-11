@@ -1,5 +1,6 @@
 import React from 'react';
 import { Container, Grid, Form, Select, Button, Segment, Message, List, Icon } from 'semantic-ui-react';
+import toMarkdown from 'to-markdown';
 import Backend from './../../../backend';
 
 import TextEditor from './TextEditor';
@@ -15,8 +16,9 @@ const defaultChannel = { key: 'none', value: 'none', text: 'None' };
 class PostEditor extends React.Component {
   state = {
     title: '',
-    defaultContent: '',
+    defaultContent: 'Hello World!',
     outputHtml: '',
+    content: '',
     showPreview: false,
     channels: [], // { key: 'A...', value: '1...', text: 'A...' }
     primaryDestination: undefined,
@@ -140,33 +142,35 @@ class PostEditor extends React.Component {
 
   onPublish = (e) => {
     e.preventDefault();
-    this.setState({ loading: true });
-
-    // this.props.data.[postType, postImage]
-    // this.state.[title, primaryDestination, secondaryDestination, postContent]
-    Backend.app.service('bot').create({
-      type: this.props.data.postType,
-      chatId: this.state.primaryDestination,
-      photo: this.props.data.postImage,
-      message: this.state.content,
-    }).then(res => {
-      this.setState({
-        loading: false,
-        requestResult: {
-          ok: true,
-          message: 'Post published successfully.'
-        }
-      });
-    }).catch(err => {
-      this.setState({
-        loading: false,
-        requestResult: {
-          ok: false,
-          message: 'Error on publish!'
-        }
+    this.setState({
+      loading: true,
+      content: toMarkdown(this.state.outputHtml)
+    }, () => {
+      // this.props.data.[postType, postImage]
+      // this.state.[title, primaryDestination, secondaryDestination, postContent]
+      Backend.app.service('bot').create({
+        type: this.props.data.postType,
+        chatId: this.state.primaryDestination,
+        photo: this.props.data.postImage,
+        message: this.state.content,
+      }).then(res => {
+        this.setState({
+          loading: false,
+          requestResult: {
+            ok: true,
+            message: 'Post published successfully.'
+          }
+        });
+      }).catch(err => {
+        this.setState({
+          loading: false,
+          requestResult: {
+            ok: false,
+            message: 'Error on publish!'
+          }
+        });
       });
     });
-
   }
 
   autoDismissResult = () => {
