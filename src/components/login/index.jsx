@@ -49,7 +49,7 @@ class Login extends React.Component {
           }
         </Segment>
         <Segment textAlign='center' secondary>
-          No Account? <a href='help'>Create an account.</a>
+          No Account? <a href='#/help'>Create an account.</a>
         </Segment>
       </div>
     );

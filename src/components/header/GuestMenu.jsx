@@ -6,7 +6,7 @@ const GuestMenu = () => (
     name='login'
     position='right'
     as='a'
-    href='/login'
+    href='#/login'
   >
     <Icon name='sign in' />
     Sign in

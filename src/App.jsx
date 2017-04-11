@@ -9,6 +9,7 @@ import Home from './components/home';
 import Login from './components/login';
 import Help from './components/help';
 import Post from './components/post';
+import Contact from './components/help/Contact';
 
 import { brand } from './config';
 
@@ -57,6 +58,7 @@ class App extends Component {
               this.state.isAuth ? <Post /> : <Redirect to="/login" />
             )} />
             <Route path='/help' component={Help} />
+            <Route path='/contact' component={Contact} />
           </div>
           <Footer brand={brand} />
         </div>
