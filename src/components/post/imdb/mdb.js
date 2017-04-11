@@ -1,6 +1,6 @@
 import jsonp from 'fetch-jsonp';
 
-const API = 'http://www.omdbapi.com/';
+const API = 'https://www.omdbapi.com/';
 
 export function search(title) {
   const url = `${API}?s=${title}`;

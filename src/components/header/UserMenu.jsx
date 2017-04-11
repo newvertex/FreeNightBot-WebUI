@@ -22,7 +22,7 @@ const UserMenu = ({ user }) => (
     <Menu.Item
       name='new'
       as='a'
-      href='/post'
+      href='#/post'
     >
       <Icon name='add' />
       <span className='hide-on-mobile'>New</span>
