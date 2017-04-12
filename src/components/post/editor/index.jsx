@@ -150,6 +150,18 @@ class PostEditor extends React.Component {
             replacement: function (content) {
               return content + '\n';
             }
+          },
+          {
+            filter: 'div',
+            replacement: function (content) {
+              return content;
+            }
+          },
+          {
+            filter: 'span',
+            replacement: function (content) {
+              return content;
+            }
           }
         ]
       })
