@@ -40,9 +40,9 @@ const UserMenu = ({ user }) => (
           </span>
         </Dropdown.Header>
         <Dropdown.Divider />
-        <Dropdown.Item text='Dashboard' icon='dashboard' onClick={() => {window.location.href = '/'}} />
+        <Dropdown.Item text='Dashboard' icon='dashboard' onClick={() => { window.location.href = '/' }} />
         <Dropdown.Item text='Profile' icon='user' disabled />
-        <Dropdown.Item text='Help' icon='help' />
+        <Dropdown.Item text='Help' icon='help' onClick={() => window.location.href = '/#/help'} />
         <Dropdown.Divider />
         <Dropdown.Item text='Settings' icon='settings' disabled />
         <Dropdown.Item text='Sign Out' icon='sign out' onClick={() => logout()} />
