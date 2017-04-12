@@ -61,12 +61,50 @@ class TextEditor extends React.Component {
   }
 
   onChange = (e) => {
-    this.props.output(this.refs.editor.innerHTML);
+    if (this.props.isDefault) {
+      this.props.output(this.refs.defaultEditor.innerHTML);
+    } else {
+      this.props.output(this.refs.extraEditor.innerHTML);
+    }
   }
 
   toggleHelp = (e) => {
     e.preventDefault();
     this.setState({ showHelp: !this.state.showHelp });
+  }
+
+  renderDefaultEditBox = () => {
+    return (
+      <div
+        contentEditable
+        spellCheck={false}
+        suppressContentEditableWarning
+        className="ui middle attached segment editor"
+        dir="auto"
+        ref="defaultEditor"
+        onInput={this.onChange}
+      >
+        <p>
+          {this.props.defaultContent}
+        </p>
+      </div>
+    );
+  }
+
+  renderExtraEditBox = () => {
+    return (
+      <div
+        contentEditable
+        spellCheck={false}
+        suppressContentEditableWarning
+        className="ui middle attached segment editor"
+        dir="auto"
+        ref="extraEditor"
+        onInput={this.onChange}
+        dangerouslySetInnerHTML={{ __html: this.props.defaultContent }}
+      >
+      </div>
+    );
   }
 
   render() {
@@ -87,21 +125,7 @@ class TextEditor extends React.Component {
           <Menu.Item as="a" icon="help circle outline" href="editorHelp" position="right" active={this.state.showHelp} onClick={this.toggleHelp} />
 
         </Menu>
-
-        <div
-          contentEditable
-          spellCheck={false}
-          suppressContentEditableWarning
-          className="ui middle attached segment editor"
-          dir="auto"
-          ref="editor"
-          onInput={this.onChange}
-        >
-          <p>
-            {this.props.defaultContent}
-          </p>
-        </div>
-
+        {this.props.isDefault ? this.renderDefaultEditBox() : this.renderExtraEditBox()}
         <Menu attached="bottom" icon>
           <EmojiPicker add={this.emoji} saveRange={this.saveRange} />
           <Menu.Item position="right">

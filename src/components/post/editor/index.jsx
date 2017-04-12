@@ -11,18 +11,16 @@ const NOTES = {
   primaryDestination: `To be able publish your post, first select the primary destination. If you haven't any destination key please read help to find how to create one.`,
 };
 
-const defaultChannel = { key: 'none', value: 'none', text: 'None' };
-
 class PostEditor extends React.Component {
   state = {
     title: '',
     defaultContent: 'Hello World!',
+    isDefault: true,
     outputHtml: '',
     content: '',
     showPreview: false,
     channels: [], // { key: 'A...', value: '1...', text: 'A...' }
     primaryDestination: undefined,
-    secondaryDestination: undefined,
     loading: false,
     requestResult: null, // { ok: true, message: 'example message' }
   }
@@ -35,6 +33,7 @@ class PostEditor extends React.Component {
 
     if (this.props.data.newType === 'template') {
       this.getTemplate();
+      this.setState({ isDefault: false });
     }
   }
 
@@ -47,12 +46,8 @@ class PostEditor extends React.Component {
   }
 
   onSelectDestination = (e, data) => {
-    let value = data.value;
-    if (value === 'none') {
-      value = undefined;
-    }
-
-    this.setState({ [data.name]: value });
+    let currentItem = data.options.filter(item => item.value === data.value)[0];
+    this.setState({ primaryDestination: currentItem['data-chatId'] });
   }
 
   onRefreshChannels = (e) => {
@@ -68,12 +63,10 @@ class PostEditor extends React.Component {
         let userChannels = [];
 
         if (res.data.keys) {
-          userChannels = res.data.keys.map(item => {
-            return { key: item.key, value: item.kid, text: item.key }
+          userChannels = res.data.keys.map((item, index) => {
+            return { key: index, value: item.key, text: item.key, 'data-chatId': item.kid }
           });
         }
-
-        userChannels.splice(0, 0, defaultChannel);
 
         this.setState({
           channels: userChannels,
@@ -144,7 +137,22 @@ class PostEditor extends React.Component {
     e.preventDefault();
     this.setState({
       loading: true,
-      content: toMarkdown(this.state.outputHtml)
+      content: toMarkdown(this.state.outputHtml, {
+        converters: [
+          {
+            filter: 'b',
+            replacement: function (content) {
+              return '*' + content + '*';
+            }
+          },
+          {
+            filter: 'p',
+            replacement: function (content) {
+              return content + '\n';
+            }
+          }
+        ]
+      })
     }, () => {
       // this.props.data.[postType, postImage]
       // this.state.[title, primaryDestination, secondaryDestination, postContent]
@@ -228,10 +236,6 @@ class PostEditor extends React.Component {
                 <label htmlFor="primaryDestination">Primary destination</label>
                 <Select name="primaryDestination" placeholder="Select primary channel/group" options={this.state.channels} onChange={this.onSelectDestination} required />
               </Form.Field>
-              {/*<Form.Field>
-                <label htmlFor="secondaryDestination">Secondary destination</label>
-                <Select name="secondaryDestination" placeholder="Select secondary channel/group" options={this.state.channels} onChange={this.onSelectDestination} />
-              </Form.Field>*/}
               <Form.Field width="1">
                 <label>Refresh</label>
                 <Button icon="refresh" basic onClick={this.onRefreshChannels} />
@@ -262,7 +266,7 @@ class PostEditor extends React.Component {
         </Form>
         <Grid stackable columns='equal'>
           <Grid.Column>
-            <TextEditor defaultContent={this.state.defaultContent} output={this.output} onPreview={this.onPreview} />
+            <TextEditor isDefault={this.state.isDefault} defaultContent={this.state.defaultContent} output={this.output} onPreview={this.onPreview} />
           </Grid.Column>
           {this.state.showPreview && this.renderPreview()}
         </Grid>
