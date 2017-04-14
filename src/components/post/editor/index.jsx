@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Grid, Form, Select, Button, Segment, Message, List, Icon } from 'semantic-ui-react';
-import toMarkdown from 'to-markdown';
 import Backend from './../../../backend';
+import stripTags from './strip-tags';
 
 import TextEditor from './TextEditor';
 import PostPreview from './PostPreview';
@@ -16,8 +16,7 @@ class PostEditor extends React.Component {
     title: '',
     defaultContent: 'Hello World!',
     isDefault: true,
-    outputHtml: '',
-    content: '',
+    output: '',
     showPreview: false,
     channels: [], // { key: 'A...', value: '1...', text: 'A...' }
     primaryDestination: undefined,
@@ -38,7 +37,8 @@ class PostEditor extends React.Component {
   }
 
   output = (html) => {
-    this.setState({ outputHtml: html });
+    let cleanHtml = stripTags(html, '<p><i><b><a>');
+    this.setState({ output: cleanHtml });
   }
 
   onPreview = (e, data) => {
@@ -85,7 +85,7 @@ class PostEditor extends React.Component {
         } else {
           this.setState({
             defaultContent: res.content,
-            outputHtml: res.content,
+            output: res.content,
           });
         }
       });
@@ -100,7 +100,7 @@ class PostEditor extends React.Component {
 
     this.setState({
       defaultContent: content,
-      outputHtml: content,
+      output: content,
     });
   }
 
@@ -110,7 +110,7 @@ class PostEditor extends React.Component {
 
     Backend.app.service('templates').create({
       title: this.state.title,
-      content: this.state.outputHtml,
+      content: this.state.output,
       postType: this.props.data.postType,
     }).then(res => {
       this.setState({
@@ -135,60 +135,32 @@ class PostEditor extends React.Component {
 
   onPublish = (e) => {
     e.preventDefault();
-    this.setState({
-      loading: true,
-      content: toMarkdown(this.state.outputHtml, {
-        converters: [
-          {
-            filter: 'b',
-            replacement: function (content) {
-              return '*' + content + '*';
-            }
-          },
-          {
-            filter: 'p',
-            replacement: function (content) {
-              return content + '\n';
-            }
-          },
-          {
-            filter: 'div',
-            replacement: function (content) {
-              return content;
-            }
-          },
-          {
-            filter: 'span',
-            replacement: function (content) {
-              return content;
-            }
-          }
-        ]
-      })
-    }, () => {
-      // this.props.data.[postType, postImage]
-      // this.state.[title, primaryDestination, secondaryDestination, postContent]
-      Backend.app.service('bot').create({
-        type: this.props.data.postType,
-        chatId: this.state.primaryDestination,
-        photo: this.props.data.postImage,
-        message: this.state.content,
-      }).then(res => {
-        this.setState({
-          loading: false,
-          requestResult: {
-            ok: true,
-            message: 'Post published successfully.'
-          }
-        });
-      }).catch(err => {
-        this.setState({
-          loading: false,
-          requestResult: {
-            ok: false,
-            message: 'Error on publish!'
-          }
-        });
+    this.setState({ loading: true });
+    let msg = this.state.output.replace(/<p>/g, '').replace(/<\/p>/g, '\n').replace(/&nbsp;/g, ' ');
+    console.log('before re arrange', msg)
+    // this.props.data.[postType, postImage]
+    // this.state.[title, primaryDestination, secondaryDestination, postContent]
+    Backend.app.service('bot').create({
+      type: this.props.data.postType,
+      chatId: this.state.primaryDestination,
+      photo: this.props.data.postImage,
+      message: msg,
+      parseMode: 'HTML', // 'HTML' 'Markdown'
+    }).then(res => {
+      this.setState({
+        loading: false,
+        requestResult: {
+          ok: true,
+          message: 'Post published successfully.'
+        }
+      });
+    }).catch(err => {
+      this.setState({
+        loading: false,
+        requestResult: {
+          ok: false,
+          message: 'Error on publish!'
+        }
       });
     });
   }
@@ -231,7 +203,7 @@ class PostEditor extends React.Component {
         <PostPreview
           type={this.props.data.postType}
           image={this.props.data.postImage}
-          outputHtml={this.state.outputHtml}
+          content={this.state.output}
         />
       </Grid.Column>
     );
