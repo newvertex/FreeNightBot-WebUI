@@ -157,7 +157,7 @@ class PostEditor extends React.Component {
         }
       ]
     });
-    msg = htmlUtils.htmlspecialchars(htmlUtils.stripTags(msg), null, null, false);
+    msg = htmlUtils.stripTags(msg);
     // this.props.data.[postType, postImage]
     // this.state.[title, primaryDestination, secondaryDestination, postContent]
     Backend.app.service('bot').create({
