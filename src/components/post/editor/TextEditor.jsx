@@ -7,8 +7,6 @@ import EditorHelp from './Help';
 
 class TextEditor extends React.Component {
   state = {
-    html: '',
-    rtl: false,
     range: undefined,
     showHelp: false,
   }
@@ -59,52 +57,14 @@ class TextEditor extends React.Component {
     this.restoreRange();
     document.execCommand('createLink', false, url);
   }
-
+  
   onChange = (e) => {
-    if (this.props.isDefault) {
-      this.props.output(this.refs.defaultEditor.innerHTML);
-    } else {
-      this.props.output(this.refs.extraEditor.innerHTML);
-    }
+    this.props.output(this.refs.editor.innerHTML);
   }
 
   toggleHelp = (e) => {
     e.preventDefault();
     this.setState({ showHelp: !this.state.showHelp });
-  }
-
-  renderDefaultEditBox = () => {
-    return (
-      <div
-        contentEditable
-        spellCheck={false}
-        suppressContentEditableWarning
-        className="ui middle attached segment editor"
-        dir="auto"
-        ref="defaultEditor"
-        onInput={this.onChange}
-      >
-        <p>
-          {this.props.defaultContent}
-        </p>
-      </div>
-    );
-  }
-
-  renderExtraEditBox = () => {
-    return (
-      <div
-        contentEditable
-        spellCheck={false}
-        suppressContentEditableWarning
-        className="ui middle attached segment editor"
-        dir="auto"
-        ref="extraEditor"
-        onInput={this.onChange}
-        dangerouslySetInnerHTML={{ __html: this.props.defaultContent }}
-      >
-      </div>
-    );
   }
 
   render() {
@@ -125,7 +85,20 @@ class TextEditor extends React.Component {
           <Menu.Item as="a" icon="help circle outline" href="editorHelp" position="right" active={this.state.showHelp} onClick={this.toggleHelp} />
 
         </Menu>
-        {this.props.isDefault ? this.renderDefaultEditBox() : this.renderExtraEditBox()}
+
+        <div
+          id="textEditor"
+          contentEditable
+          spellCheck={false}
+          suppressContentEditableWarning
+          className="ui middle attached segment editor"
+          dangerouslySetInnerHTML={{ __html: this.props.content }}
+          ref="editor"
+          dir="auto"
+          onInput={this.onChange}
+        >
+        </div>
+
         <Menu attached="bottom" icon>
           <EmojiPicker add={this.emoji} saveRange={this.saveRange} />
           <Menu.Item position="right">

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Container, Grid, Form, Select, Button, Segment, Message, List, Icon } from 'semantic-ui-react';
 import Backend from './../../../backend';
-import stripTags from './strip-tags';
+import toMarkdown from 'to-markdown';
+import * as htmlUtils from './html-utils';
 
 import TextEditor from './TextEditor';
 import PostPreview from './PostPreview';
@@ -14,9 +15,8 @@ const NOTES = {
 class PostEditor extends React.Component {
   state = {
     title: '',
-    defaultContent: 'Hello World!',
-    isDefault: true,
-    output: '',
+    defaultContent: '<p>Hello World!</p>',
+    output: '<p>Hello World!</p>',
     showPreview: false,
     channels: [], // { key: 'A...', value: '1...', text: 'A...' }
     primaryDestination: undefined,
@@ -32,12 +32,11 @@ class PostEditor extends React.Component {
 
     if (this.props.data.newType === 'template') {
       this.getTemplate();
-      this.setState({ isDefault: false });
     }
   }
 
-  output = (html) => {
-    let cleanHtml = stripTags(html, '<p><i><b><a>');
+  editorOutput = (html) => {
+    let cleanHtml = htmlUtils.stripTags(html, '<p><i><b><a>');
     this.setState({ output: cleanHtml });
   }
 
@@ -136,8 +135,29 @@ class PostEditor extends React.Component {
   onPublish = (e) => {
     e.preventDefault();
     this.setState({ loading: true });
-    let msg = this.state.output.replace(/<p>/g, '').replace(/<\/p>/g, '\n').replace(/&nbsp;/g, ' ');
-    console.log('before re arrange', msg)
+    let msg = toMarkdown(this.state.output, {
+      converters: [
+        {
+          filter: 'b',
+          replacement: function (content) {
+            return '*' + content + '*';
+          }
+        },
+        {
+          filter: 'i',
+          replacement: function (content) {
+            return '_' + content + '_';
+          }
+        },
+        {
+          filter: 'p',
+          replacement: function (content) {
+            return content + '\n';
+          }
+        }
+      ]
+    });
+    msg = htmlUtils.htmlspecialchars(htmlUtils.stripTags(msg), null, null, false);
     // this.props.data.[postType, postImage]
     // this.state.[title, primaryDestination, secondaryDestination, postContent]
     Backend.app.service('bot').create({
@@ -145,7 +165,7 @@ class PostEditor extends React.Component {
       chatId: this.state.primaryDestination,
       photo: this.props.data.postImage,
       message: msg,
-      parseMode: 'HTML', // 'HTML' 'Markdown'
+      parseMode: 'Markdown', // 'HTML' 'Markdown'
     }).then(res => {
       this.setState({
         loading: false,
@@ -250,7 +270,7 @@ class PostEditor extends React.Component {
         </Form>
         <Grid stackable columns='equal'>
           <Grid.Column>
-            <TextEditor isDefault={this.state.isDefault} defaultContent={this.state.defaultContent} output={this.output} onPreview={this.onPreview} />
+            <TextEditor content={this.state.defaultContent} output={this.editorOutput} onPreview={this.onPreview} />
           </Grid.Column>
           {this.state.showPreview && this.renderPreview()}
         </Grid>
