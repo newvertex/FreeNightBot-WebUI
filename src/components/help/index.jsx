@@ -27,19 +27,6 @@ const Help = () => (
       <Grid.Row>
         <Grid.Column>
           <h3>
-            Register channel/group
-          </h3>
-          <p>
-            How to register channel or group after add <a href="https://t.me/FreeNightDL_bot">FreeNightBot</a> to your channel or group?
-          </p>
-          <br />
-          <GifPlayer gif={RegisterChannelGif} still={RegisterChannelStill} className="ui middle aligned image" />
-          <br />
-          <br />
-          <br />
-        </Grid.Column>
-        <Grid.Column>
-          <h3>
             Signup for Web UI
           </h3>
           <p>
