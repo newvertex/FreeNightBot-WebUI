@@ -4,8 +4,6 @@ import GifPlayer from 'react-gif-player';
 
 import IntroGif from './Intro.gif';
 import IntroStill from './Intro.png'
-import RegisterChannelGif from './RegisterChannel.gif';
-import RegisterChannelStill from './RegisterChannel.png'
 import SignupForWebGif from './SignupForWeb.gif';
 import SignupForWebStill from './SignupForWeb.png'
 

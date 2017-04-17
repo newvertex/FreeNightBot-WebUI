@@ -37,6 +37,7 @@ class PostEditor extends React.Component {
 
   editorOutput = (html) => {
     let cleanHtml = htmlUtils.stripTags(html, '<p><i><b><a>');
+    cleanHtml = cleanHtml.replace(/<p><\/p>/g, '<p><br/></p>');
     this.setState({ output: cleanHtml });
   }
 
@@ -135,7 +136,8 @@ class PostEditor extends React.Component {
   onPublish = (e) => {
     e.preventDefault();
     this.setState({ loading: true });
-    let msg = toMarkdown(this.state.output, {
+    let html = this.state.output.replace(/<p><br\/><\/p>/g, '<p>&lt;br/&gt;</p>');
+    let msg = toMarkdown(html, {
       converters: [
         {
           filter: 'b',
